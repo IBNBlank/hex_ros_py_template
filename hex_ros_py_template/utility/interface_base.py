@@ -9,6 +9,8 @@
 import json
 import queue
 import typing
+from collections import deque
+from typing import Any, Optional
 from abc import ABC, abstractmethod
 
 
@@ -21,9 +23,9 @@ class InterfaceBase(ABC):
         self._int_param = {}
 
         ### rx msg queues
-        self._in_str_queue = queue.Queue()
-        self._in_int_queue = queue.Queue()
-        
+        self._in_str_deque = deque()
+        self._in_int_deque = deque()
+
         ### name
         self._name = name
         print(f"#### InterfaceBase init: {self._name} ####")
@@ -34,7 +36,7 @@ class InterfaceBase(ABC):
     @abstractmethod
     def ok(self) -> bool:
         raise NotImplementedError("InterfaceBase.ok")
-    
+
     @abstractmethod
     def shutdown(self):
         raise NotImplementedError("InterfaceBase.shutdown")
@@ -49,19 +51,19 @@ class InterfaceBase(ABC):
     @abstractmethod
     def logd(self, msg, *args, **kwargs):
         raise NotImplementedError("logd")
-    
+
     @abstractmethod
     def logi(self, msg, *args, **kwargs):
         raise NotImplementedError("logi")
-    
+
     @abstractmethod
     def logw(self, msg, *args, **kwargs):
         raise NotImplementedError("logw")
-    
+
     @abstractmethod
     def loge(self, msg, *args, **kwargs):
         raise NotImplementedError("loge")
-    
+
     @abstractmethod
     def logf(self, msg, *args, **kwargs):
         raise NotImplementedError("logf")
@@ -78,7 +80,7 @@ class InterfaceBase(ABC):
 
     def get_rate_param(self) -> dict:
         return self._rate_param
-    
+
     def get_str_param(self) -> dict:
         return self._str_param
 
@@ -99,28 +101,23 @@ class InterfaceBase(ABC):
     ####################
     ### subscribers
     ####################
+    @staticmethod
+    def deque_helper(dq: deque, latest: bool = False) -> Optional[Any]:
+        if not latest:
+            if dq:
+                return dq.popleft()
+            else:
+                return None
+        else:
+            ret = None
+            while dq:
+                ret = dq.popleft()
+            return ret
+
     # in str
-    def has_in_str(self) -> bool:
-        return not self._in_str_queue.empty()
-
-    def clear_in_str(self):
-        self._in_str_queue.queue.clear()
-
-    def get_in_str(self) -> typing.Optional[str]:
-        try:
-            return self._in_str_queue.get_nowait()
-        except queue.Empty:
-            return None
+    def get_in_str(self, latest: bool = False) -> Optional[str]:
+        return self.deque_helper(self._in_str_deque, latest)
 
     # in int
-    def has_in_int(self) -> bool:
-        return not self._in_int_queue.empty()
-
-    def clear_in_int(self):
-        self._in_int_queue.queue.clear()
-
-    def get_in_int(self) -> typing.Optional[int]:
-        try:
-            return self._in_int_queue.get_nowait()
-        except queue.Empty:
-            return None
+    def get_in_int(self, latest: bool = False) -> Optional[int]:
+        return self.deque_helper(self._in_int_deque, latest)

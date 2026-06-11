@@ -117,7 +117,7 @@ class DataInterface(InterfaceBase):
         self.__out_int_pub.publish(msg)
 
     def __in_str_callback(self, msg: String):
-        self._in_str_queue.put(msg.data)
+        self._in_str_deque.append(msg.data)
 
     def __in_int_callback(self, msg: Int32):
-        self._in_int_queue.put(msg.data)
+        self._in_int_deque.append(msg.data)

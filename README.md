@@ -1,4 +1,4 @@
-# hex_python_template
+# hex_ros_py_template
 
 ## What does this package do
 
@@ -67,7 +67,7 @@ Follow these steps to set up the project for development and testing on your loc
 2. Clone the repository:
 
    ```shell
-   git clone https://github.com/hexfellow/hex_python_template.git
+   git clone https://github.com/hexfellow/hex_ros_py_template.git
    ```
 
 3. Navigate back to the `catkin_ws` directory and build the workspace:
@@ -98,16 +98,16 @@ Follow these steps to set up the project for development and testing on your loc
 
 ### Usage
 
-1. Launch the `python_template` node:
+1. Launch the `template` node:
 
    For ROS 1:
    ```shell
-   roslaunch hex_python_template python_template.launch
+   roslaunch hex_ros_py_template template.launch
    ```
 
    For ROS 2:
    ```shell
-   ros2 launch hex_python_template python_template.launch.py
+   ros2 launch hex_ros_py_template template.launch.py
    ```
 
 2. Publish to `/in_str` and `/in_int` topics.

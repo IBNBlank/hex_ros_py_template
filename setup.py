@@ -2,7 +2,7 @@ import os
 from setuptools import setup, find_packages
 from glob import glob
 
-package_name = 'hex_python_template'
+package_name = 'hex_ros_py_template'
 
 
 def get_files(tar: str, src: str):
@@ -38,7 +38,7 @@ setup(
     license='TODO: License declaration',
     entry_points={
         'console_scripts': [
-            'python_template = hex_python_template.python_template:main',
+            'template = hex_ros_py_template.template:main',
         ],
     },
 )

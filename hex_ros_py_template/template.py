@@ -18,7 +18,7 @@ class PythonTemplate:
 
     def __init__(self):
         ### utility
-        self.__data_interface = DataInterface("python_template")
+        self.__data_interface = DataInterface("template")
 
         ### parameters
         self.__str_param = self.__data_interface.get_str_param()
@@ -34,15 +34,13 @@ class PythonTemplate:
         while self.__data_interface.ok():
             # Get data from ros every wake up
             total_str = ""
-            while self.__data_interface.has_in_str():
-                in_str = self.__data_interface.get_in_str()
+            for in_str in iter(self.__data_interface.get_in_str, None):
                 print(f"in_str: {in_str}")
                 total_str += in_str
             if total_str != "":
                 self.__out_str = f"{self.__str_param['name']}: {total_str}"
 
-            while self.__data_interface.has_in_int():
-                in_int = self.__data_interface.get_in_int()
+            for in_int in iter(self.__data_interface.get_in_int, None):
                 print(f"in_int: {in_int}")
                 self.__out_int = in_int if in_int > self.__int_param['range'][
                     0] else self.__int_param['range'][0]
@@ -61,8 +59,8 @@ class PythonTemplate:
 
 
 def main():
-    python_template = PythonTemplate()
-    python_template.run()
+    template = PythonTemplate()
+    template.run()
 
 
 if __name__ == '__main__':

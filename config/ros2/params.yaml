@@ -1,4 +1,4 @@
-python_template:
+template:
   ros__parameters:
     # rate
     rate_ros: 300.0
