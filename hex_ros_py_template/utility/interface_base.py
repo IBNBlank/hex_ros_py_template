@@ -110,9 +110,8 @@ class InterfaceBase(ABC):
             else:
                 return None
         else:
-            ret = None
-            while dq:
-                ret = dq.popleft()
+            ret = dq[-1]
+            dq.clear()
             return ret
 
     # in str
